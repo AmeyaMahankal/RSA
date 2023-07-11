@@ -4,6 +4,57 @@
 
 <h1>Hello, world!</h1>
 
-Welcome to your new app.
+<div>
+    <div>
+        <div>
+            <label>P: @P</label>
+            <input type="text" @bind="P"/>
+        </div>
+        <div>
+            <label>Q: @Q</label>
+            <input type="text" @bind="Q"/>
+        </div>
+        <div>
+            <button @onclick="VerifyPandQ">Check P and Q</button>
+            <label>@check1status</label>
+        </div>
+    </div>
+</div>
 
-<SurveyPrompt Title="How is Blazor working for you?"/>
+@code
+{
+    private int P;
+    private int Q;
+    private bool check1;
+    private string check1status;
+
+    private async void VerifyPandQ()
+    {
+        if (IsPrime(P) && IsPrime(Q))
+        {
+            check1 = true;
+            check1status = "P and Q are suitable prime numbers";
+
+        }
+        else
+        {
+            check1 = false;
+            check1status = "Suitable prime numbers have not been chosen fpr P and Q";
+        }
+    }
+    
+    public static bool IsPrime(int number)
+    {
+        if (number <= 1) return false;
+        if (number == 2) return true;
+        if (number % 2 == 0) return false;
+
+        var boundary = (int)Math.Floor(Math.Sqrt(number));
+          
+        for (int i = 3; i <= boundary; i=i+1)
+            if (number % i == 0)
+                return false;
+    
+        return true;        
+    }
+}
