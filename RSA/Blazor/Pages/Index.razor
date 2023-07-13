@@ -18,6 +18,12 @@
             <button @onclick="VerifyPandQ">Check P and Q</button>
             <label>@check1status</label>
         </div>
+        <div>
+            <label>N: @N</label>
+        </div>
+        <div>
+            <label>Phi(N): @phiN</label>
+        </div>
     </div>
 </div>
 
@@ -25,6 +31,8 @@
 {
     private int P;
     private int Q;
+    private int N;
+    private int phiN;
     private bool check1;
     private string check1status;
 
@@ -32,14 +40,18 @@
     {
         if (IsPrime(P) && IsPrime(Q))
         {
+            N = P * Q;
+            phiN = phi(N);
             check1 = true;
             check1status = "P and Q are suitable prime numbers";
 
         }
         else
         {
+            N = 0;
+            phiN = 0;
             check1 = false;
-            check1status = "Suitable prime numbers have not been chosen fpr P and Q";
+            check1status = "Suitable prime numbers have not been chosen for P and Q";
         }
     }
     
@@ -56,5 +68,21 @@
                 return false;
     
         return true;        
+    }
+    
+    public static int gcd(int a, int b)
+    {
+        if (a == 0)
+            return b;
+        return gcd(b % a, a);
+    }
+    
+    public static int phi(int n)
+    {
+        int result = 1;
+        for (int i = 2; i < n; i++)
+            if (gcd(i, n) == 1)
+                result++;
+        return result;
     }
 }
