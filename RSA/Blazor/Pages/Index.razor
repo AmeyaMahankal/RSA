@@ -1,4 +1,5 @@
 ﻿@page "/"
+@using System.Numerics
 
 <PageTitle>Index</PageTitle>
 
@@ -48,7 +49,7 @@
         {
             N = P * Q;
             phiN = phi(N);
-            D = modInverse(E, phiN); //multiplicativeinversemodulo(E, phiN)
+            D = multiplicativeinversemodulo(E, phiN);
             check1 = true;
             check1status = "P and Q are suitable prime numbers";
 
@@ -95,14 +96,9 @@
 
     public static int multiplicativeinversemodulo(int e, int phin)
     {
-        double p1 = e;
-        double p2 = phi(phin); //cant use as the limits are too low for calculations use another data type
-        p2 = p2 - 1;
-        double calc = Math.Pow(p1,p2);
-        calc = calc % phin;
-        int intcalc = (int)calc;
-
-        return intcalc;
+        int theCalculation =(int) BigInteger.ModPow(e, phi(phin) - 1, phin);
+        
+        return theCalculation;
     }
     
     int modInverse(int a, int n) 
