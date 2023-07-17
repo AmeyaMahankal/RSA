@@ -24,6 +24,9 @@
         <div>
             <label>Phi(N): @phiN</label>
         </div>
+        <div>
+            <label>D: @D</label>
+        </div>
     </div>
 </div>
 
@@ -36,12 +39,16 @@
     private bool check1;
     private string check1status;
 
+    private int E = 3;
+    private int D;
+
     private async void VerifyPandQ()
     {
         if (IsPrime(P) && IsPrime(Q))
         {
             N = P * Q;
             phiN = phi(N);
+            D = modInverse(E, phiN); //multiplicativeinversemodulo(E, phiN)
             check1 = true;
             check1status = "P and Q are suitable prime numbers";
 
@@ -63,7 +70,7 @@
 
         var boundary = (int)Math.Floor(Math.Sqrt(number));
           
-        for (int i = 3; i <= boundary; i=i+1)
+        for (int i = 3; i <= boundary; i=i+2)
             if (number % i == 0)
                 return false;
     
@@ -84,5 +91,33 @@
             if (gcd(i, n) == 1)
                 result++;
         return result;
+    }
+
+    public static int multiplicativeinversemodulo(int e, int phin)
+    {
+        double p1 = e;
+        double p2 = phi(phin); //cant use as the limits are too low for calculations use another data type
+        p2 = p2 - 1;
+        double calc = Math.Pow(p1,p2);
+        calc = calc % phin;
+        int intcalc = (int)calc;
+
+        return intcalc;
+    }
+    
+    int modInverse(int a, int n) 
+    {
+        int i = n, v = 0, d = 1;
+        while (a>0) {
+            int t = i/a, x = a;
+            a = i % x;
+            i = x;
+            x = d;
+            d = v - t*x;
+            v = x;
+        }
+        v %= n;
+        if (v<0) v = (v+n)%n;
+        return v;
     }
 }
